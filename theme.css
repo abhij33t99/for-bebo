@@ -1,0 +1,154 @@
+/* ===== Stitch theme: decorations and extra animations ===== */
+h1, h2 { font-family: var(--display); font-weight: 400; letter-spacing: .5px; }
+h1 { color: #fff; text-shadow: 0 3px 0 var(--deep), 0 8px 22px rgba(0,0,0,.4); }
+h2 { color: var(--sky); text-shadow: 0 3px 0 var(--deep), 0 6px 16px rgba(0,0,0,.35); }
+
+/* Title letters bounce in one by one, then ripple */
+h1 .word { display: inline-block; white-space: nowrap; }
+h1 .ch { display: inline-block; }
+.active h1 .ch { animation: chIn .55s cubic-bezier(.2,.9,.3,1.8) both, ripple 3.2s ease-in-out infinite; animation-delay: calc(var(--n) * .03s + .2s), calc(var(--n) * .06s + 1.8s); }
+@keyframes chIn { from { opacity: 0; transform: translateY(26px) scale(.3) rotate(-18deg); } }
+@keyframes ripple { 0%, 14%, 100% { translate: 0 0; } 7% { translate: 0 -7px; } }
+
+/* Buttons: stitched edge (get it?) and a moving shine */
+.btn {
+  position: relative; isolation: isolate; font-family: var(--display); font-weight: 400; font-size: 1.3rem; letter-spacing: .5px;
+  background: linear-gradient(135deg, #3d7fe0, #6d6ee8 55%, #ff8cc6); box-shadow: 0 6px 0 var(--ink), 0 14px 26px rgba(0,0,0,.35);
+}
+.btn::before { content: ""; position: absolute; inset: 4px; border: 2px dashed rgba(255,255,255,.6); border-radius: inherit; pointer-events: none; }
+.btn::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+  background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.45) 50%, transparent 65%) 150% 0 / 250% 100%; animation: shine 3s infinite;
+}
+@keyframes shine { 55%, 100% { background-position: -80% 0; } }
+.no { background: #62709f; box-shadow: 0 5px 0 var(--ink); }
+.no::after { display: none; }
+.pulse { animation: heartbeat 1.5s ease-in-out infinite !important; }
+@keyframes heartbeat { 12%, 36% { scale: 1.09; } 24%, 50% { scale: 1; } }
+
+.glass { background: rgba(168,224,255,.14); border: 2px dashed rgba(168,224,255,.55); box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+
+/* Stitch picture in a bubble, with ears */
+.stitch { position: relative; margin-inline: 34px; }
+.stitch::before, .stitch::after {
+  content: ""; position: absolute; top: 4%; width: 46%; height: 48%; z-index: 0;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M98%2062%20C80%2028%2046%202%206%202%20C1%2010%206%2018%2015%2025%20C7%2027%203%2033%205%2040%20C14%2076%2052%2098%2096%2094%20Z%27%20fill%3D%27%233d7fe0%27%20stroke%3D%27%231d3c8f%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27/%3E%3Cpath%20d%3D%27M88%2063%20C70%2036%2044%2016%2017%2013%20C20%2021%2027%2027%2034%2031%20C23%2032%2017%2037%2018%2044%20C28%2070%2056%2085%2087%2080%20Z%27%20fill%3D%27%23c77fc0%27/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.stitch::before { left: -19%; transform-origin: 100% 80%; animation: earL 3s ease-in-out infinite; }
+.stitch::after { right: -19%; background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cg%20transform%3D%27matrix%28-1%200%200%201%20100%200%29%27%3E%3Cpath%20d%3D%27M98%2062%20C80%2028%2046%202%206%202%20C1%2010%206%2018%2015%2025%20C7%2027%203%2033%205%2040%20C14%2076%2052%2098%2096%2094%20Z%27%20fill%3D%27%233d7fe0%27%20stroke%3D%27%231d3c8f%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27/%3E%3Cpath%20d%3D%27M88%2063%20C70%2036%2044%2016%2017%2013%20C20%2021%2027%2027%2034%2031%20C23%2032%2017%2037%2018%2044%20C28%2070%2056%2085%2087%2080%20Z%27%20fill%3D%27%23c77fc0%27/%3E%3C/g%3E%3C/svg%3E"); transform-origin: 0 80%; animation: earR 3s ease-in-out infinite; }
+@keyframes earL { 0%, 70%, 100% { rotate: 0deg; } 78% { rotate: -14deg; } 86% { rotate: 4deg; } }
+@keyframes earR { 0%, 70%, 100% { rotate: 0deg; } 78% { rotate: 14deg; } 86% { rotate: -4deg; } }
+.stitch > * { position: relative; z-index: 1; cursor: pointer; }
+.stitch > img {
+  border-radius: 44% 44% 40% 40%; border: 5px solid var(--sky);
+  box-shadow: 0 0 0 5px var(--deep), 0 0 36px 8px rgba(168,224,255,.45), 0 22px 30px rgba(0,0,0,.35);
+}
+.stitch.poke > img { animation: jelly .7s !important; }
+@keyframes jelly { 25% { scale: 1.14 .86; } 45% { scale: .9 1.1; } 65% { scale: 1.05 .95; } }
+.bubble {
+  position: fixed; z-index: 50; translate: -50% -100%; pointer-events: none; white-space: nowrap; padding: 8px 16px; border-radius: 18px;
+  background: var(--cream); color: var(--ink); font: 1.15rem var(--display); box-shadow: 0 8px 20px rgba(0,0,0,.3); animation: bubble 1.8s ease both;
+}
+@keyframes bubble { 0% { opacity: 0; scale: .3; } 15% { opacity: 1; scale: 1.08; } 25%, 80% { opacity: 1; scale: 1; } 100% { opacity: 0; transform: translateY(-20px); } }
+
+/* Night sky and ocean */
+#scene { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+.moon {
+  position: absolute; top: calc(14px + env(safe-area-inset-top)); right: 78px; width: 32px; height: 32px; border-radius: 50%; background: #fff3c9;
+  box-shadow: 0 0 30px 10px rgba(255,240,190,.4); animation: moonGlow 5s ease-in-out infinite;
+}
+.moon::after { content: ""; position: absolute; top: 7px; left: 8px; width: 6px; height: 6px; border-radius: 50%; background: #f1dfa6; box-shadow: 10px 10px 0 -1px #f1dfa6; }
+@keyframes moonGlow { 50% { box-shadow: 0 0 46px 18px rgba(255,240,190,.5); } }
+.shoot { position: absolute; width: 110px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, #fff); rotate: 28deg; opacity: 0; animation: shoot 7s ease-in infinite; }
+@keyframes shoot { 0% { opacity: 0; transform: translateX(0); } 3% { opacity: 1; } 14%, 100% { opacity: 0; transform: translateX(360px); } }
+.ufo { position: absolute; top: 15%; left: -130px; width: 96px; animation: fly 17s linear infinite; }
+.ufo svg { display: block; width: 100%; animation: hover 1.6s ease-in-out infinite; }
+.ufo .light { animation: blinkLight .7s steps(2) infinite alternate; }
+.ufo .light:nth-of-type(even) { animation-delay: .35s; }
+@keyframes blinkLight { to { opacity: .2; } }
+@keyframes fly { 0% { transform: translate(0, 0); } 25% { transform: translate(35vw, 45px); } 45% { transform: translate(65vw, -25px); } 65%, 100% { transform: translate(calc(100vw + 260px), 25px); } }
+@keyframes hover { 50% { transform: translateY(-8px) rotate(-6deg); } }
+.leaf { position: absolute; top: -8px; width: min(34vw, 190px); opacity: .85; }
+.leaf.l { left: -14px; }
+.leaf.r { right: -14px; scale: -1 1; }
+.leaf svg { display: block; width: 100%; transform-origin: 0 0; animation: sway 6s ease-in-out infinite alternate; }
+.leaf.r svg { animation-delay: -3s; }
+@keyframes sway { from { rotate: -7deg; } to { rotate: 6deg; } }
+.wave { position: absolute; left: 0; right: 0; bottom: 0; background-repeat: repeat-x; background-size: 600px 100%; animation: wave linear infinite; }
+.wave.a { height: 92px; opacity: .3; animation-duration: 14s; }
+.wave.b { height: 68px; opacity: .4; animation-duration: 9s; animation-direction: reverse; }
+.wave.c { height: 40px; opacity: .45; animation-duration: 6s; }
+@keyframes wave { to { background-position-x: 600px; } }
+
+/* Circle wipe between pages */
+.wipe {
+  position: fixed; z-index: 38; pointer-events: none; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px; border-radius: 50%;
+  background: radial-gradient(circle, transparent 38%, var(--sky) 40% 48%, var(--blue) 50% 58%, var(--pink) 60% 66%, transparent 68%); animation: wipe .8s ease-out forwards;
+}
+@keyframes wipe { from { scale: 0; opacity: 1; } to { scale: 55; opacity: 0; } }
+
+/* Paw prints that follow the pointer */
+.paw { position: fixed; z-index: 45; pointer-events: none; font-size: 15px; filter: hue-rotate(185deg) saturate(2.5); animation: paw 1s ease-out forwards; }
+@keyframes paw { from { opacity: .9; } to { opacity: 0; scale: .5; } }
+
+/* Floating bursts */
+.pop { position: fixed; z-index: 39; pointer-events: none; animation: burst 1.2s cubic-bezier(.15,.7,.4,1) forwards; }
+@keyframes burst { 0% { opacity: 1; transform: translate(0,0) scale(.3); } 70% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.2) rotate(var(--r)); } }
+
+/* Envelope and letter */
+.active #envelope:not(.opening) { animation: envFloat 3s ease-in-out infinite; }
+@keyframes envFloat { 50% { translate: 0 -12px; rotate: -2deg; } }
+#envelope { background: linear-gradient(#cfeaff, #8fc4ff); border: 3px solid #fff; }
+#envelope .flap { background: #6aa8f5; }
+#paper { border: 4px solid var(--sky); box-shadow: 0 0 0 4px var(--deep), 0 20px 40px rgba(0,0,0,.4); background-color: var(--cream); }
+.active #paper { animation: unfold .8s cubic-bezier(.2,.9,.3,1.3) both; }
+@keyframes unfold { from { opacity: 0; transform: perspective(700px) rotateX(-80deg) scale(.6); } }
+
+/* Cards, photos, promises */
+.active .card { animation: deal .6s cubic-bezier(.2,.9,.3,1.4) both; animation-delay: calc(var(--i, 0) * .1s + .15s); }
+@keyframes deal { from { opacity: 0; transform: translateY(60px) rotate(-14deg) scale(.5); } }
+.front { background: linear-gradient(145deg, #3d7fe0, #1d3c8f); border: 3px dashed var(--sky); box-shadow: 0 10px 22px rgba(0,0,0,.3); }
+.card:not(.flipped) .front { animation: glow 2.4s ease-in-out infinite; animation-delay: calc(var(--i, 0) * .2s); }
+@keyframes glow { 50% { box-shadow: 0 0 22px 5px rgba(168,224,255,.65); } }
+.back { background: linear-gradient(145deg, #fff, #ffe3f2); border: 3px solid var(--pink); }
+
+.polaroid { position: relative; }
+.polaroid::before { content: ""; position: absolute; z-index: 1; top: -9px; left: 50%; width: 52px; height: 18px; translate: -50% 0; rotate: -4deg; background: rgba(168,224,255,.8); }
+.active .polaroid { animation: drop .7s cubic-bezier(.2,.9,.3,1.35) backwards; animation-delay: calc(var(--i, 0) * .13s + .15s); }
+@keyframes drop { from { opacity: 0; translate: 0 -70px; scale: 1.3; rotate: 12deg; } }
+.polaroid img { object-position: 50% 30%; }
+#lightbox figure { border: 4px solid var(--sky); }
+
+#promises li { border: 2px dashed rgba(168,224,255,.55); background: rgba(20,45,120,.55); }
+#teaser { font-family: var(--display); font-weight: 400; font-size: 1.35rem; }
+#teaser.bump { animation: jelly .5s; }
+#dots i.on { background: var(--sky); box-shadow: 0 0 10px var(--sky); }
+#music { background: var(--blue); border: 2px solid var(--sky); }
+
+@media (prefers-reduced-motion: reduce) { .ufo, .shoot, .paw, .pop, .wipe { display: none; } }
+
+/* ===== Small and short phones ===== */
+.glass { -webkit-backdrop-filter: blur(8px); }
+@media (max-width: 360px) {
+  .screen[data-screen="letter"] h2 { padding-inline: 34px; }
+}
+@media (max-height: 600px) {
+  .screen { gap: 10px; padding-top: calc(52px + env(safe-area-inset-top)); padding-bottom: 20px; }
+  .stitch { width: min(46vw, 30vh, 190px); }
+  #choices { min-height: 76px; }
+}
+/* Phone held sideways: picture on the left, text and buttons on the right */
+@media (orientation: landscape) and (max-height: 500px) {
+  .screen { padding: 44px 16px 12px; gap: 8px; }
+  .screen.active:has(> .stitch) { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; row-gap: 6px; align-content: center; justify-items: center; }
+  .screen.active:has(> .stitch) > * { grid-column: 2; }
+  .screen.active:has(> .stitch) > .stitch { grid-column: 1; grid-row: 1 / span 6; align-self: center; width: min(26vw, 48vh); }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.35rem; }
+  p { font-size: .95rem; }
+  .glass { padding: 10px 14px; }
+  #teaser { min-height: 1.6em; font-size: 1.1rem; }
+  #choices { min-height: 62px; }
+  #paper { max-height: 52vh; max-height: 52dvh; }
+  #envelope { width: min(46vw, 260px); }
+}
